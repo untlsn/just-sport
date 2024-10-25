@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 export default function TheHeader(): JSXElement {
 	return (
-		<div class="h-16 mb-4">
+		<div class="h-16">
 			<header class="h-inherit fixed top-0 left-0 w-full p-4 shadow-lg bg-primary-4 text-white flex gap-4 items-center">
 				<Dialog>
 					<Dialog.Trigger class="i-ph-barbell rotate-90 text-8 data-[expanded]:rotate-0 transition-transform" />

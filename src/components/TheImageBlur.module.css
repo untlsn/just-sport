@@ -1,0 +1,18 @@
+.Image {
+	animation: fading 5s ease-in-out infinite alternate 5s;
+}
+
+@keyframes fading {
+	from {
+		filter: blur(0);
+		opacity: 1;
+	}
+	85% {
+		filter: blur(0);
+		opacity: 1;
+	}
+	to {
+		filter: blur(.5rem);
+		opacity: .0;
+	}
+}
