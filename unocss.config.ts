@@ -56,7 +56,7 @@ export default defineConfig({
 		presetTypography(),
 		presetWebFonts({
 			fonts: {
-				sans: 'Roboto',
+				sans: 'Manrope:400,500',
 			},
 		}),
 		presetIcons({

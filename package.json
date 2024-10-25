@@ -8,14 +8,23 @@
     "version": "vinxi version"
   },
   "dependencies": {
+    "@iconify-json/ph": "^1.2.1",
     "@iconify/utils": "^2.1.33",
+    "@kobalte/core": "^0.13.7",
     "@solidjs/meta": "^0.29.4",
     "@solidjs/router": "^0.14.10",
     "@solidjs/start": "^1.0.9",
+    "@un-tlsn/eslint": "^0.1.1",
     "clsx": "^2.1.1",
+    "drizzle-kit": "^0.26.2",
+    "drizzle-orm": "^0.35.3",
+    "eslint-plugin-solid": "^0.14.3",
+    "maplibre-gl": "^4.7.1",
+    "postgres": "^3.4.4",
     "solid-devtools": "^0.30.1",
     "solid-js": "^1.9.2",
     "unocss": "^0.63.6",
+    "valibot": "^0.42.1",
     "vinxi": "^0.4.3"
   },
   "engines": {
