@@ -18,7 +18,7 @@ export default function TheHeader(): JSXElement {
 									Strona główna
 								</TheHeaderDialogLink>
 								<TheHeaderDialogLink
-									href="/places/create"
+									href="/place/create"
 									class="before:i-ph-map-trifold-fill"
 								>
 									Dodaj placówke
