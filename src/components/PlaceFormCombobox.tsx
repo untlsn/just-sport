@@ -56,7 +56,7 @@ export default function PlaceFormCombobox(props: {
 				<button
 					type="submit"
 					onClick={() => createElement(value())}
-					class="bg-gradient-to-b from-[#F05D15] to-[#F7BC6C] text-white rounded px-2 py-1"
+					class="bg-gradient-to-b from-primary-5 to-primary-1 text-white rounded px-2 py-1"
 				>
 					Dodaj
 				</button>
@@ -65,7 +65,7 @@ export default function PlaceFormCombobox(props: {
 				</p>
 			</Combobox.Control>
 			<Combobox.Portal>
-				<Combobox.Content class="px-4 py-2 bg-[#FCE9CE] rounded-lg shadow-lg">
+				<Combobox.Content class="px-4 py-2 bg-primary-0 rounded-lg shadow-lg">
 					<Combobox.Listbox />
 				</Combobox.Content>
 			</Combobox.Portal>

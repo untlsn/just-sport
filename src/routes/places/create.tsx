@@ -94,12 +94,12 @@ export default function ThePage(): JSXElement {
 	const nameField = sf.createBaseField({ form, name: 'name' });
 
 	return (
-		<form onSubmit={form.submit} class="mx-auto w-320">
+		<form onSubmit={form.submit}>
 			<header class="text-8 font-semibold">
 				Tworzenie placówki
 			</header>
 			<TextField onChange={nameField.onChange} class="my-2 relative">
-				<TextField.Label class="block absolute left-2 top-0 bg-white px-2">Nazwa placówki: </TextField.Label>
+				<TextField.Label class="block absolute left-2 top-0 bg-bg-0 px-2">Nazwa placówki: </TextField.Label>
 				<TextField.Input
 					value={nameField.value}
 					class="border-1 px-2 py-1 my-3"
@@ -132,7 +132,7 @@ export default function ThePage(): JSXElement {
 			</div>
 			<button
 				type="submit"
-				class="bg-gradient-to-b from-[#F05D15] to-[#F7BC6C] text-white rounded px-4 py-2 text-5"
+				class="bg-gradient-to-b from-primary-5 to-primary-1 text-white rounded px-4 py-2 text-5"
 			>
 				Stwórz placówke
 			</button>

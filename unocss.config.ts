@@ -19,7 +19,17 @@ export default defineConfig({
 			top: 999,
 		},
 		colors: {
-
+			bg: {
+				0: '#FEFAF5',
+			},
+			primary: {
+				0: '#FCE9CE',
+				1: '#F7BC6C',
+				2: '#FFB247',
+				3: '#FA9C1A',
+				4: '#F58115',
+				5: '#F05D15',
+			},
 		},
 	},
 	rules: [

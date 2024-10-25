@@ -1,0 +1,24 @@
+.CollapsibleContent {
+	--kb-collapsible-content-height: 0;
+	overflow: hidden;
+	animation: slideRight 300ms ease-out;
+}
+.CollapsibleContent[data-expanded] {
+	animation: slideLeft 300ms ease-out;
+}
+@keyframes slideRight {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-100%);
+	}
+}
+@keyframes slideLeft {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
