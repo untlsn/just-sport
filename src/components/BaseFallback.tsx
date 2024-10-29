@@ -6,7 +6,7 @@ export default function BaseFallback(props: { title: string }): JSXElement {
 				"You went somewhere you weren't supposed to go<br />
 				Saw something you weren't supposed to see"
 			</p>
-			<a href="" class="bg-gradient-to-b from-primary-5 to-primary-1 text-white rounded px-2 py-1 text-6">
+			<a href="/" class="bg-gradient-to-b from-primary-5 to-primary-1 text-white rounded px-2 py-1 text-6">
 				Wróć do strone główną
 			</a>
 		</main>
