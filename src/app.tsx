@@ -12,7 +12,7 @@ export default function App(): JSXElement {
 				<MetaProvider>
 					<TheHeader />
 					<Suspense>
-						<div class="w-320 mx-auto">
+						<div class="w-320 max-w-screen mx-auto">
 							{props.children}
 						</div>
 					</Suspense>

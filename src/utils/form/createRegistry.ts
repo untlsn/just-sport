@@ -1,6 +1,6 @@
 import { batch, onCleanup } from 'solid-js';
 import type { FormController, Validation } from './types';
-import { triggerValidation } from './utils';
+import { FormTransformError, triggerValidation } from './utils';
 import { formInner } from './createForm';
 
 export type BaseField<T> = Readonly<{
@@ -36,8 +36,8 @@ export function createBaseField<T extends object, K extends (keyof T) & string>(
 		onChange: (value) => batch(() => {
 			(options.form as any).setValues(options.name, value);
 			if (!options.form.submitted) return;
+			if (options.form[formInner].checkTransform() instanceof FormTransformError) return;
 			validate();
-			options.form[formInner].checkTransform();
 		}),
 		get value() {
 			return options.form.values[options.name];

@@ -32,6 +32,9 @@ export default function TheHeader(): JSXElement {
 						Just <i class="i-ph-arrow-fat-lines-right-fill" /> sport
 					</a>
 				</h1>
+				<a href="/auth/login" class="ml-auto">
+					Zaloguj się
+				</a>
 			</header>
 		</div>
 	);
