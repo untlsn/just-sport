@@ -1,6 +1,9 @@
 import { TextField } from '@kobalte/core/text-field';
 import * as V from 'valibot';
 import * as F from '~/utils/form';
+import { registerUserAction } from '~/server/auth';
+import { useAction, useSubmission } from '@solidjs/router';
+import { Match, Switch } from 'solid-js';
 
 const reqString = V.pipe(V.string('Pole wymagane'), V.minLength(1, 'Pole wymagane'));
 
@@ -21,10 +24,14 @@ const FormSchema = V.pipe(
 type FormSchema = typeof FormSchema;
 
 export default function ThePage(): JSXElement {
-	const form = F.createForm<Partial<V.InferInput<FormSchema>>>({
+
+	const registerUser = useAction(registerUserAction);
+	const userRegistering = useSubmission(registerUserAction);
+
+	const form = F.createForm<Partial<V.InferInput<FormSchema>>, V.InferOutput<FormSchema>>({
 		initialValues: {},
-		onSubmit() {
-			console.log('---');
+		onSubmit(payload) {
+			return registerUser(payload);
 		},
 		transform: F.parseValibotForm(FormSchema),
 	});
@@ -44,9 +51,31 @@ export default function ThePage(): JSXElement {
 				<PageTextField {.../*@once*/register('email')} label="Email" />
 				<PageTextField {.../*@once*/register('password')} label="Hasło" type="password" />
 				<PageTextField {.../*@once*/register('repeatPassword')} label="Powtórz hasło" type="password" />
-				<button type="submit" class="bg-gradient-to-b from-primary-5 to-primary-1 text-white rounded px-4 py-2 text-4">
-					Zarejestruj się
-				</button>
+				<Switch fallback={(
+					<button
+						type="submit"
+						class="bg-gradient-to-b from-primary-5 to-primary-1 text-white rounded px-4 py-2 text-4"
+					>
+						Zarejestruj się
+					</button>
+				)}
+				>
+					<Match when={userRegistering.pending}>
+						<span
+							class="bg-gradient-to-b from-primary-5 to-primary-1 text-white rounded px-4 py-2 text-4"
+						>
+							<i class="i-line-md-loading-alt-loop" />
+						</span>
+					</Match>
+					<Match when={userRegistering.result}>
+						<span
+							class="bg-gradient-to-b from-primary-5 to-primary-1 text-white rounded px-4 py-2 text-4"
+						>
+							Zarejestrowano!
+						</span>
+					</Match>
+				</Switch>
+
 			</form>
 		</main>
 	);
