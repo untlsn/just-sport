@@ -1,4 +1,4 @@
-import { onCleanup } from 'solid-js';
+import { batch, onCleanup } from 'solid-js';
 import type { FormController, Validation } from './types';
 import { triggerValidation } from './utils';
 import { formInner } from './createForm';
@@ -30,26 +30,25 @@ export function createBaseField<T extends object, K extends (keyof T) & string>(
 		return success;
 	};
 
-	const res: BaseField<T[K]> = {
+	return {
 		validation,
 		validate,
-		onChange: (value) => {
+		onChange: (value) => batch(() => {
 			(options.form as any).setValues(options.name, value);
 			if (!options.form.submitted) return;
 			validate();
 			options.form[formInner].checkTransform();
-		},
+		}),
 		get value() {
 			return options.form.values[options.name];
 		},
-		get errors(): string[] | undefined {
+		get errors() {
 			return options.form[formInner].errors?.[options.name];
 		},
-		get error(): string | undefined {
-			return res.errors?.[0];
+		get error() {
+			return this.errors?.[0];
 		},
 	};
-	return res;
 }
 
 type CreateRegistry<T extends object> = <K extends (keyof T) & string>(

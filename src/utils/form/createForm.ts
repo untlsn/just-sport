@@ -43,9 +43,7 @@ export function createForm<TInput extends object, TOutput=TInput>(options: {
 			checkTransform() {
 				const parse = form[formInner].transform(unwrap(values));
 				if (parse instanceof FormTransformError) {
-					if (parse.nested) Object.entries(parse.nested).forEach(([key, errors]) => {
-						setErrors(key, errors);
-					});
+					if (parse.nested) setErrors(parse.nested);
 					setRootErrors(parse.root);
 				}
 				return parse;
