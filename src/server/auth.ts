@@ -2,7 +2,20 @@ import db, { table } from '~/db';
 import { nanoid } from 'nanoid';
 import { action } from '@solidjs/router';
 import { sendMail } from '~/server/mailer';
+import * as S from 'drizzle-orm';
 
+export async function activateEmail(token: string): Promise<boolean> {
+	'use server';
+	const where = S.eq(table.userActivation.id, token);
+	const [user] = await db.select({ id: table.userActivation.userId }).from(table.userActivation).where(where);
+
+	if (!user) return false;
+
+	await db.delete(table.userActivation).where(where);
+	await db.update(table.user).set({ active: true	})
+		.where(S.eq(table.user.id, user.id));
+	return true;
+}
 
 export const registerUserAction = action(async (payload: {
 	name:     string,
@@ -18,7 +31,7 @@ export const registerUserAction = action(async (payload: {
 
 		await Promise.all([
 			db.insert(table.userActivation).values([{
-				userId, token,
+				userId, id: token,
 			}]),
 			sendMail({
 				from:    process.env.EMAIL_USER,

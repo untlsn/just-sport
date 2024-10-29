@@ -1,7 +1,7 @@
-export default function ThePage(): JSXElement {
+export default function BaseFallback(props: { title: string }): JSXElement {
 	return (
 		<main class="text-center min-h-screen flex-(~ col) justify-center items-center gap-6">
-			<h1 class="text-10 max-w-200">Taka placówka nie istnieje, czy na pewno podałeś odpowiednii link?</h1>
+			<h1 class="text-10 max-w-200">{props.title}</h1>
 			<p class="text-5 text-gray-4">
 				"You went somewhere you weren't supposed to go<br />
 				Saw something you weren't supposed to see"

@@ -10,7 +10,6 @@ export const user = P.pgTable('user', {
 });
 
 export const userActivation = P.pgTable('user_activation', {
-	id,
-	userId: P.integer(),
-	token:  P.text(),
+	id:     P.text().primaryKey(),
+	userId: P.integer().notNull(),
 });
