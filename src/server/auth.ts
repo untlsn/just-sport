@@ -8,7 +8,9 @@ import { createError, pipeHandledError } from '~/utils/errors';
 
 type SessionData = { userId: number };
 
-async function getSession() {
+type Session = ReturnType<typeof useSession<SessionData>>;
+
+async function getSession(): Promise<Session> {
 	'use server';
 	if (!process.env.SESSION_SECRET) throw new Error('SESSION_SECRET is not defined in envs');
 	return useSession<SessionData>({
