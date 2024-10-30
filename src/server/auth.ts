@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import { action, cache, redirect } from '@solidjs/router';
 import { sendMail } from '~/server/mailer';
 import * as S from 'drizzle-orm';
-import { H3Error, useSession } from 'vinxi/http';
+import { useSession } from 'vinxi/http';
 import { createError, pipeHandledError } from '~/utils/errors';
 
 type SessionData = { userId: number };
@@ -94,3 +94,18 @@ export const fetchUserName = cache(async () => {
 
 	return user.name;
 }, 'fetchUserName');
+
+export const fetchUserAuth = cache(async () => {
+	'use server';
+
+	const session = await getSession();
+	return !!(session.data.userId);
+}, 'fetchUserAuth');
+
+
+export async function logout(): Promise<void> {
+	'use server';
+
+	const session = await getSession();
+	await session.clear();
+}
