@@ -1,8 +1,20 @@
 import db, { table } from '~/db';
 import { nanoid } from 'nanoid';
-import { action } from '@solidjs/router';
+import { action, cache, redirect } from '@solidjs/router';
 import { sendMail } from '~/server/mailer';
 import * as S from 'drizzle-orm';
+import { H3Error, useSession } from 'vinxi/http';
+import { createError, pipeHandledError } from '~/utils/errors';
+
+type SessionData = { userId: number };
+
+async function getSession() {
+	'use server';
+	if (!process.env.SESSION_SECRET) throw new Error('SESSION_SECRET is not defined in envs');
+	return useSession<SessionData>({
+		password: process.env.SESSION_SECRET,
+	});
+}
 
 export async function activateEmail(token: string): Promise<boolean> {
 	'use server';
@@ -16,6 +28,29 @@ export async function activateEmail(token: string): Promise<boolean> {
 		.where(S.eq(table.user.id, user.id));
 	return true;
 }
+
+
+export const loginUserAction = action(async (payload: {
+	email:    string,
+	password: string,
+}) => {
+	'use server';
+
+	try {
+		const [user] = await db.select().from(table.user)
+			.where(S.eq(table.user.email, payload.email));
+
+		if (!user) throw createError('Email jest nieprawidłowy');
+		if (!user.active) throw createError('Użytkownik nie został aktywowany');
+		if (user.password != payload.password) throw createError('Hasło nie jest prawiodłowe');
+		const session = await getSession();
+		await session.update({ userId: user.id });
+		return redirect('/');
+
+	} catch (e) {
+		pipeHandledError(e);
+	}
+});
 
 export const registerUserAction = action(async (payload: {
 	name:     string,
@@ -47,3 +82,15 @@ export const registerUserAction = action(async (payload: {
 		return false;
 	}
 });
+
+export const fetchUserName = cache(async () => {
+	'use server';
+
+	const session = await getSession();
+	const { userId } = session.data;
+	if (!userId) return '';
+	const [user] = await db.select({ name: table.user.name }).from(table.user).where(S.eq(table.user.id, userId));
+	if (!user) return '';
+
+	return user.name;
+}, 'fetchUserName');

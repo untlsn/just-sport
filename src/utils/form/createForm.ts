@@ -1,5 +1,5 @@
 import { createStore, reconcile, unwrap } from 'solid-js/store';
-import { createSignal } from 'solid-js';
+import { createSignal, startTransition } from 'solid-js';
 import type { FormController, FormControllerErrors, TransformOutput } from './types';
 import { FormTransformError, triggerValidation } from './utils';
 
@@ -18,20 +18,22 @@ export function createForm<TInput extends object, TOutput=TInput>(options: {
 		values,
 		setValues,
 		submit(ev) {
-			ev?.preventDefault();
-			ev?.stopPropagation();
-			form.submitted = true;
-			const inner = form[formInner];
-			inner.setErrors(reconcile({}));
-			inner.setRootErrors(undefined);
-			const parse = inner.checkTransform();
-			let error = false;
-			Object.entries(inner.validations).forEach(([key, validation]) => {
-				if (!triggerValidation(form, key, validation)) error = true;
-			});
+			return startTransition(() => {
+				ev?.preventDefault();
+				ev?.stopPropagation();
+				form.submitted = true;
+				const inner = form[formInner];
+				inner.setErrors(reconcile({}));
+				inner.setRootErrors(undefined);
+				const parse = inner.checkTransform();
+				let error = false;
+				Object.entries(inner.validations).forEach(([key, validation]) => {
+					if (!triggerValidation(form, key, validation)) error = true;
+				});
 
-			if (error || parse instanceof FormTransformError) return;
-			options.onSubmit(parse);
+				if (error || parse instanceof FormTransformError) return;
+				options.onSubmit(parse);
+			});
 		},
 		[formInner]: {
 			errors,

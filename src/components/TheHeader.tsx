@@ -1,8 +1,13 @@
 import { Dialog } from '@kobalte/core/dialog';
 import style from './TheHeader.module.css';
 import clsx from 'clsx';
+import { fetchUserName } from '~/server/auth';
+import { createAsync } from '@solidjs/router';
+import { Show, Suspense } from 'solid-js';
 
 export default function TheHeader(): JSXElement {
+	const userName = createAsync(() => fetchUserName());
+
 	return (
 		<div class="h-16">
 			<header class="h-inherit fixed top-0 left-0 w-full p-4 shadow-lg bg-primary-4 text-white flex gap-4 items-center">
@@ -32,9 +37,20 @@ export default function TheHeader(): JSXElement {
 						Just <i class="i-ph-arrow-fat-lines-right-fill" /> sport
 					</a>
 				</h1>
-				<a href="/auth/login" class="ml-auto">
-					Zaloguj się
-				</a>
+				<Suspense>
+					<Show
+						when={userName()}
+						fallback={(
+							<a href="/auth/login" class="ml-auto">
+								Zaloguj się
+							</a>
+						)}
+					>
+						<p class="ml-auto">
+							Witaj {userName()}
+						</p>
+					</Show>
+				</Suspense>
 			</header>
 		</div>
 	);
