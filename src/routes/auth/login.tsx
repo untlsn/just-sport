@@ -3,7 +3,7 @@ import * as V from 'valibot';
 import * as F from '~/utils/form';
 import { loginUserAction } from '~/server/auth';
 import { useAction, useSubmission } from '@solidjs/router';
-import { Match, Switch } from 'solid-js';
+import { Show } from 'solid-js';
 import clsx from 'clsx';
 import { asHandledError } from '~/utils/errors';
 
@@ -43,30 +43,23 @@ export default function ThePage(): JSXElement {
 				<PageTextField {.../*@once*/register('email')} label="Email" />
 				<PageTextField {.../*@once*/register('password')} label="Hasło" type="password" class="pb-12" />
 				<p class="text-red-6 text-3">{asHandledError(userLogin.error)?.message}</p>
-				<Switch fallback={(
+				<Show
+					when={!userLogin.pending}
+					fallback={(
+						<span
+							class="bg-gradient-to-b from-primary-5 to-primary-1 text-white rounded px-4 py-2 text-4"
+						>
+							<i class="i-line-md-loading-alt-loop" />
+						</span>
+					)}
+				>
 					<button
 						type="submit"
 						class="bg-gradient-to-b from-primary-5 to-primary-1 text-white rounded px-4 py-2 text-4"
 					>
 						Zaloguj się
 					</button>
-				)}
-				>
-					<Match when={userLogin.pending}>
-						<span
-							class="bg-gradient-to-b from-primary-5 to-primary-1 text-white rounded px-4 py-2 text-4"
-						>
-							<i class="i-line-md-loading-alt-loop" />
-						</span>
-					</Match>
-					<Match when={userLogin.result}>
-						<span
-							class="bg-gradient-to-b from-primary-5 to-primary-1 text-white rounded px-4 py-2 text-4"
-						>
-							Zalogowano!
-						</span>
-					</Match>
-				</Switch>
+				</Show>
 
 			</form>
 		</main>
