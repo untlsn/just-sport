@@ -6,7 +6,8 @@ export const user = P.pgTable('user', {
 	name:     P.text().notNull(),
 	password: P.text().notNull(),
 	email:    P.text().unique().notNull(),
-	active:   P.boolean(),
+	active:   P.boolean().default(false),
+	sports:   P.text().array().default([]),
 });
 
 export const userActivation = P.pgTable('user_activation', {

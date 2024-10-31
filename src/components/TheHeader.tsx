@@ -46,9 +46,9 @@ export default function TheHeader(): JSXElement {
 							</a>
 						)}
 					>
-						<p class="ml-auto">
+						<a href="/profile" class="ml-auto flex items-center gap-2 after:(c_ i-ph-user-circle-fill text-8)">
 							Witaj {userName()}
-						</p>
+						</a>
 					</Show>
 				</Suspense>
 			</header>

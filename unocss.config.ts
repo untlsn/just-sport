@@ -57,6 +57,8 @@ export default defineConfig({
 		}],
 		/** grid-cols-fit-100 -> grid-template-columns: repeat(auto-fit, minmax(400, 1fr)); */
 		[/^grid-(cols|rows)-fit-(\S+)$/, ([, type, value]) => {
+			const numValue = Number(value);
+			if (!isNaN(numValue)) value = `${numValue / 4}rem`;
 			return `grid-${type}-[repeat(auto-fit,minmax(${value},1fr))]`;
 		}],
 	],

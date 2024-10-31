@@ -111,3 +111,30 @@ export async function logout(): Promise<void> {
 	const session = await getSession();
 	await session.clear();
 }
+
+export const fetchUserProfile = cache(async () => {
+	'use server';
+
+	const session = await getSession();
+	const { userId } = session.data;
+	if (!userId) throw createError('Nie jesteś zalogowany');
+
+	const [user] = await db.select().from(table.user).where(S.eq(table.user.id, userId));
+
+	if (user) return user;
+	throw createError('Nie jesteś zalogowany');
+}, 'fetchUserProfile');
+
+
+export const updateSportsAction = action(async (sports: string[]) => {
+	'use server';
+
+	const session = await getSession();
+	const { userId } = session.data;
+	if (!userId) throw createError('Nie jesteś zalogowany');
+
+	const [res] = await db.update(table.user).set({
+		sports,
+	}).where(S.eq(table.user.id, userId)).returning({ sports: table.user.sports });
+	return res.sports;
+});

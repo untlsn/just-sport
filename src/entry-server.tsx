@@ -12,7 +12,7 @@ export default createHandler(() => (
 					<title>Just-Sport</title>
 					{assets}
 				</head>
-				<body class="bg-bg-0 min-h-screen">
+				<body class="bg-bg-0 min-h-screen text-gray-9">
 					<div id="app">{children}</div>
 					{scripts}
 				</body>
