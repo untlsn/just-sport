@@ -1,26 +1,42 @@
-import { createSignal, onCleanup, onMount } from 'solid-js';
-import style from './TheImageBlur.module.css';
+import { createSelector, createSignal, Index, onCleanup, onMount } from 'solid-js';
 import clsx from 'clsx';
 
 export default function TheImageBlur(): JSXElement {
-	const image = createSignalSequence(2);
+	const isImage = createSignalSequenceSelector();
 
 	return (
-		<img src={`/images/landing-${image() + 1}.webp`} alt="" class={clsx('w-full h-200 object-cover', style.Image)} />
+		<>
+			<Index
+				each={Array(3)}
+				children={(_, i) => {
+					return (
+						<img
+							src={`/images/landing-${i}.webp`}
+							alt=""
+							class={clsx(
+								'w-screen h-220 object-cover absolute left-0 transition-all duration-1000',
+								isImage(i) ? 'opacity-100' : 'opacity-0',
+							)}
+						/>
+					);
+				}}
+			/>
+		</>
 	);
 }
 
-function createSignalSequence(to: number) {
+function createSignalSequenceSelector() {
 	const [number, setNumber] = createSignal(0);
 
 	onMount(() => {
 		const interval = setInterval(() => {
-			setNumber((it) => it < to ? it + 1 : 0);
-		}, 10000);
+			setNumber((it) => it < 2 ? it + 1 : 0);
+		}, 5000);
 		onCleanup(() => {
 			clearInterval(interval);
 		});
 	});
 
-	return number;
+	// eslint-disable-next-line solid/reactivity
+	return createSelector(number);
 }
