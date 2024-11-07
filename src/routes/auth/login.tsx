@@ -6,12 +6,11 @@ import { useAction, useSubmission } from '@solidjs/router';
 import { Show } from 'solid-js';
 import clsx from 'clsx';
 import { asHandledError } from '~/utils/errors';
-
-const reqString = v.pipe(v.string('Pole wymagane'), v.minLength(1, 'Pole wymagane'));
+import { formString } from '~/utils/valibot';
 
 const FormSchema = 	v.object({
-	email:    v.pipe(reqString, v.email('Email nie jest prawidłowy')),
-	password: v.pipe(reqString, v.minLength(6, 'Hasło musi mieć przynajmniej 6 znaków')),
+	email:    v.pipe(formString(), v.email('Email nie jest prawidłowy')),
+	password: v.pipe(formString(), v.minLength(6, 'Hasło musi mieć przynajmniej 6 znaków')),
 });
 
 export default function ThePage(): JSXElement {

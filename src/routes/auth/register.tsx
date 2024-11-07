@@ -4,15 +4,14 @@ import * as sf from '~/utils/form';
 import { registerUserAction } from '~/server/auth';
 import { useAction, useSubmission } from '@solidjs/router';
 import { Match, Switch } from 'solid-js';
-
-const reqString = v.pipe(v.string('Pole wymagane'), v.minLength(1, 'Pole wymagane'));
+import { formString } from '~/utils/valibot';
 
 const FormSchema = v.pipe(
 	v.object({
-		name:           reqString,
-		email:          v.pipe(reqString, v.email('Email nie jest prawidłowy')),
-		password:       v.pipe(reqString, v.minLength(6, 'Hasło musi mieć przynajmniej 6 znaków')),
-		repeatPassword: v.pipe(reqString, v.minLength(6, 'Hasło musi mieć przynajmniej 6 znaków')),
+		name:           formString(),
+		email:          v.pipe(formString(), v.email('Email nie jest prawidłowy')),
+		password:       v.pipe(formString(), v.minLength(6, 'Hasło musi mieć przynajmniej 6 znaków')),
+		repeatPassword: v.pipe(formString(), v.minLength(6, 'Hasło musi mieć przynajmniej 6 znaków')),
 	}),
 	v.forward(v.partialCheck(
 		[['password'], ['repeatPassword']],
