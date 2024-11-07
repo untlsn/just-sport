@@ -7,6 +7,7 @@ export default defineConfig(
 			'solid/no-react-specific-props':                     1,
 			'@typescript-eslint/consistent-type-imports':        1,
 			'@typescript-eslint/explicit-module-boundary-types': 1,
+			'prefer-destructuring':                              1,
 		},
 		ignores: [
 			'/src/auto-imports.d.ts',
