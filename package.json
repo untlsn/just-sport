@@ -16,6 +16,7 @@
     "@solidjs/start": "^1.0.9",
     "@types/nodemailer": "^6.4.16",
     "@un-tlsn/eslint": "^0.1.1",
+    "argon2": "^0.41.1",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.26.2",

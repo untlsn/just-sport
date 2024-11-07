@@ -5,6 +5,7 @@ import { sendMail } from '~/server/mailer';
 import * as S from 'drizzle-orm';
 import { useSession } from 'vinxi/http';
 import { createError, pipeHandledError } from '~/utils/errors';
+import argon2 from 'argon2';
 
 type SessionData = { userId: number };
 
@@ -44,7 +45,7 @@ export const loginUserAction = action(async (payload: {
 
 		if (!user) throw createError('Email jest nieprawidłowy');
 		if (!user.active) throw createError('Użytkownik nie został aktywowany');
-		if (user.password != payload.password) throw createError('Hasło nie jest prawiodłowe');
+		if (await argon2.verify(user.password, payload.password)) throw createError('Hasło nie jest prawiodłowe');
 		const session = await getSession();
 		await session.update({ userId: user.id });
 		return redirect('/');
@@ -62,7 +63,11 @@ export const registerUserAction = action(async (payload: {
 	'use server';
 	try {
 		const [{ userId }] = await db.insert(table.user)
-			.values([payload])
+			.values([{
+				name:     payload.name,
+				email:    payload.email,
+				password: await argon2.hash(payload.password),
+			}])
 			.returning({ userId: table.user.id });
 		const token = nanoid();
 
