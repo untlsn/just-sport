@@ -1,32 +1,32 @@
 import { TextField } from '@kobalte/core/text-field';
-import * as V from 'valibot';
-import * as F from '~/utils/form';
+import * as v from 'valibot';
+import * as sf from '~/utils/form';
 import { loginUserAction } from '~/server/auth';
 import { useAction, useSubmission } from '@solidjs/router';
 import { Show } from 'solid-js';
 import clsx from 'clsx';
 import { asHandledError } from '~/utils/errors';
 
-const reqString = V.pipe(V.string('Pole wymagane'), V.minLength(1, 'Pole wymagane'));
+const reqString = v.pipe(v.string('Pole wymagane'), v.minLength(1, 'Pole wymagane'));
 
-const FormSchema = 	V.object({
-	email:    V.pipe(reqString, V.email('Email nie jest prawidłowy')),
-	password: V.pipe(reqString, V.minLength(6, 'Hasło musi mieć przynajmniej 6 znaków')),
+const FormSchema = 	v.object({
+	email:    v.pipe(reqString, v.email('Email nie jest prawidłowy')),
+	password: v.pipe(reqString, v.minLength(6, 'Hasło musi mieć przynajmniej 6 znaków')),
 });
 
 export default function ThePage(): JSXElement {
 	const loginUser = useAction(loginUserAction);
 	const userLogin = useSubmission(loginUserAction);
 
-	const form = F.createForm({
-		...F.satisfiesSchema(FormSchema, {}),
+	const form = sf.createForm({
+		...sf.satisfiesSchema(FormSchema, {}),
 		onSubmit(payload) {
 			userLogin.clear();
 			return loginUser(payload);
 		},
 	});
 
-	const register = F.createRegistry(form);
+	const register = sf.createRegistry(form);
 
 	return (
 		<main class="grid place-items-center min-h-screen">
@@ -63,7 +63,7 @@ export default function ThePage(): JSXElement {
 	);
 }
 
-function PageTextField(props: { label: string, type?: string, class?: string } & F.LooseBaseField<string>): JSXElement {
+function PageTextField(props: { label: string, type?: string, class?: string } & sf.LooseBaseField<string>): JSXElement {
 	return (
 		<TextField
 			class={clsx('relative pt-2', props.class)}

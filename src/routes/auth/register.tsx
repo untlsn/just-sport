@@ -1,20 +1,20 @@
 import { TextField } from '@kobalte/core/text-field';
-import * as V from 'valibot';
-import * as F from '~/utils/form';
+import * as v from 'valibot';
+import * as sf from '~/utils/form';
 import { registerUserAction } from '~/server/auth';
 import { useAction, useSubmission } from '@solidjs/router';
 import { Match, Switch } from 'solid-js';
 
-const reqString = V.pipe(V.string('Pole wymagane'), V.minLength(1, 'Pole wymagane'));
+const reqString = v.pipe(v.string('Pole wymagane'), v.minLength(1, 'Pole wymagane'));
 
-const FormSchema = V.pipe(
-	V.object({
+const FormSchema = v.pipe(
+	v.object({
 		name:           reqString,
-		email:          V.pipe(reqString, V.email('Email nie jest prawidłowy')),
-		password:       V.pipe(reqString, V.minLength(6, 'Hasło musi mieć przynajmniej 6 znaków')),
-		repeatPassword: V.pipe(reqString, V.minLength(6, 'Hasło musi mieć przynajmniej 6 znaków')),
+		email:          v.pipe(reqString, v.email('Email nie jest prawidłowy')),
+		password:       v.pipe(reqString, v.minLength(6, 'Hasło musi mieć przynajmniej 6 znaków')),
+		repeatPassword: v.pipe(reqString, v.minLength(6, 'Hasło musi mieć przynajmniej 6 znaków')),
 	}),
-	V.forward(V.partialCheck(
+	v.forward(v.partialCheck(
 		[['password'], ['repeatPassword']],
 		(input) => input.password == input.repeatPassword,
 		'Hasła muszą być takie same',
@@ -26,14 +26,14 @@ export default function ThePage(): JSXElement {
 	const registerUser = useAction(registerUserAction);
 	const userRegistering = useSubmission(registerUserAction);
 
-	const form = F.createForm({
-		...F.satisfiesSchema(FormSchema, {}),
+	const form = sf.createForm({
+		...sf.satisfiesSchema(FormSchema, {}),
 		onSubmit(payload) {
 			return registerUser(payload);
 		},
 	});
 
-	const register = F.createRegistry(form);
+	const register = sf.createRegistry(form);
 
 	return (
 		<main class="grid place-items-center min-h-screen">
@@ -78,7 +78,7 @@ export default function ThePage(): JSXElement {
 	);
 }
 
-function PageTextField(props: { label: string, type?: string } & F.LooseBaseField<string>): JSXElement {
+function PageTextField(props: { label: string, type?: string } & sf.LooseBaseField<string>): JSXElement {
 	return (
 		<TextField
 			class="relative pt-2"
