@@ -13,7 +13,7 @@ export default function ThePage(): JSXElement {
 	return (
 		<Show
 			when={activated()}
-			children={<Navigate href="/auth/login" />}
+			children={<Navigate href="/auth/login?message=U%C5%BCytkownik%20zosta%C5%82%20pomy%C5%9Blnie%20aktywowany" />}
 			fallback={<BaseFallback title="Dany token nie istnieje, albo został już użyty" />}
 		/>
 	);
