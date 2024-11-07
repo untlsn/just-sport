@@ -21,19 +21,16 @@ const FormSchema = V.pipe(
 	), ['password']),
 );
 
-type FormSchema = typeof FormSchema;
-
 export default function ThePage(): JSXElement {
 
 	const registerUser = useAction(registerUserAction);
 	const userRegistering = useSubmission(registerUserAction);
 
-	const form = F.createForm<Partial<V.InferInput<FormSchema>>, V.InferOutput<FormSchema>>({
-		initialValues: {},
+	const form = F.createForm({
+		...F.satisfiesSchema(FormSchema, {}),
 		onSubmit(payload) {
 			return registerUser(payload);
 		},
-		transform: F.parseValibotForm(FormSchema),
 	});
 
 	const register = F.createRegistry(form);

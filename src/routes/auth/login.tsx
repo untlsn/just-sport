@@ -14,19 +14,16 @@ const FormSchema = 	V.object({
 	password: V.pipe(reqString, V.minLength(6, 'Hasło musi mieć przynajmniej 6 znaków')),
 });
 
-type FormSchema = typeof FormSchema;
-
 export default function ThePage(): JSXElement {
 	const loginUser = useAction(loginUserAction);
 	const userLogin = useSubmission(loginUserAction);
 
-	const form = F.createForm<Partial<V.InferInput<FormSchema>>, V.InferOutput<FormSchema>>({
-		initialValues: {},
+	const form = F.createForm({
+		...F.satisfiesSchema(FormSchema, {}),
 		onSubmit(payload) {
 			userLogin.clear();
 			return loginUser(payload);
 		},
-		transform: F.parseValibotForm(FormSchema),
 	});
 
 	const register = F.createRegistry(form);
