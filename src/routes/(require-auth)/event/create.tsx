@@ -7,6 +7,7 @@ import type { Cords } from '~/components/EventFormMap';
 import * as v from 'valibot';
 import { formString } from '~/utils/valibot';
 import { Checkbox } from '@kobalte/core/checkbox';
+import EventFormClockPicker from '~/components/EventFormClockPicker';
 
 const EventFormMap = lazy(() => import('~/components/EventFormMap'));
 
@@ -29,6 +30,8 @@ const FormSchema = v.object({
 	}),
 	name:     formString(),
 	category: formString(),
+	start:    v.date(),
+	end:      v.date(),
 });
 
 export default function ThePage(): JSXElement {
@@ -36,9 +39,7 @@ export default function ThePage(): JSXElement {
 		...sf.satisfiesSchema(FormSchema, {
 			name: '',
 		}),
-		onSubmit(value) {
-
-		},
+		onSubmit() {},
 	});
 
 	const location = createAsync(async () => {
@@ -63,6 +64,23 @@ export default function ThePage(): JSXElement {
 				value={form.values.cords}
 			/>
 			<div class="grid-(~ cols-fit-100) my-4">
+				<div>
+					<div class="space-x-4">
+						<label>Data</label>
+						<input type="date" />
+					</div>
+					<p>Godzina:</p>
+					<EventFormClockPicker
+						label="Rozpoczęcia"
+						value={form.values.start}
+						onChange={(it) => form.setValues('start', it)}
+					/>
+					<EventFormClockPicker
+						label="Zakończenia"
+						value={form.values.end}
+						onChange={(it) => form.setValues('end', it)}
+					/>
+				</div>
 				<EventFormInput {.../*@once*/register('name')} label="Kategoria">
 					<TextField.Description class="text-3 text-gray-6 relative -top-2 left-2">
 						np. piłka nożna, tenis, bieganie
