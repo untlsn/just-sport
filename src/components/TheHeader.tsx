@@ -23,10 +23,10 @@ export default function TheHeader(): JSXElement {
 									Strona główna
 								</TheHeaderDialogLink>
 								<TheHeaderDialogLink
-									href="/place/create"
-									class="before:i-ph-map-trifold-fill"
+									href="/event/create"
+									class="before:i-ph-volleyball"
 								>
-									Dodaj placówke
+									Dodaj wydarzenie
 								</TheHeaderDialogLink>
 							</ul>
 						</Dialog.Content>

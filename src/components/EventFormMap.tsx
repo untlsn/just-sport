@@ -1,13 +1,15 @@
 import { createEffect, onMount } from 'solid-js';
 import * as Gl from 'maplibre-gl';
 import { isServer } from 'solid-js/web';
+import 'maplibre-gl/dist/maplibre-gl.css';
+
 
 export type Cords = {
-	lon: number;
+	lng: number;
 	lat: number;
 };
 const warsawCords: Cords = {
-	lon: 21.017532,
+	lng: 21.017532,
 	lat: 52.237049,
 };
 
@@ -17,7 +19,7 @@ const fetchCurrentLocation = async () => {
 		navigator.geolocation.getCurrentPosition(({ coords }) => {
 			res({
 				lat: coords.latitude,
-				lon: coords.longitude,
+				lng: coords.longitude,
 			});
 		}, () => {
 			res(warsawCords);
@@ -45,7 +47,7 @@ export default function ObjectFormMap(props: {
 		// eslint-disable-next-line solid/reactivity
 		map.on('click', async ({ lngLat }) => {
 			const newPin = {
-				lon: lngLat.lng,
+				lng: lngLat.lng,
 				lat: lngLat.lat,
 			};
 			props.onChange(newPin);
